@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n core_tags static  %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/accounts/style.css' %}" >
+{% endblock %}
+
+{% block content %}
+        {% block profile_content %}{% endblock %}
+{% endblock %}
+

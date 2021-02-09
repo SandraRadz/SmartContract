@@ -1,0 +1,5 @@
+{% autoescape off %}
+    <h4>Hi {% if user.first_name %}{{ user.first_name }} {% endif %},</h4>
+Please click on the link to confirm your registration,
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

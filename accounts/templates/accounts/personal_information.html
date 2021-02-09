@@ -1,0 +1,61 @@
+{% extends "accounts/base_profile.html" %}
+{% load i18n static core_tags %}
+
+{% block title %}{% trans "My account" %}{% endblock %}
+
+{% block profile_content %}
+    {%  if extra_message %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div>{{ extra_message }}</div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="container account-container">
+        <div class="row">
+{#            <div class="col-3">#}
+{##}
+{#            </div>#}
+            <div class="col-6">
+                <div class="container">
+                    <div class="row account-info-row">
+                        <div class="col-6 account-info-row-title">First Name</div>
+                        <div class="col-6">{{ user.first_name }}</div>
+                    </div>
+                    <div class="row account-info-row">
+                        <div class="col-6 account-info-row-title">Last Name</div>
+                        <div class="col-6">{{ user.last_name }}</div>
+                    </div>
+                    <div class="row account-info-row">
+                        <div class="col-6 account-info-row-title">Email</div>
+                        <div class="col-6">{{ user.email }}</div>
+                    </div>
+                    {% if not user.is_verified %}
+                        <div class="row account-info-row">
+                            <div class="col-12 red-text">Your email isn't verified yet. Please, check your email and click on the confirmation</div>
+                        </div>
+                    {% endif %}
+                    {%  if user.has_usable_password  %}
+                    <div class="row account-password-row">
+                        <div class="col-6">
+                            <a href="{% url 'password_change' %}">Change Password</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row account-password-row">
+                        <div class="col-6">
+                            <a href="{% url 'password_create' %}">Create Password</a>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+
+            </div>
+            <div class="col-3 edit-button-container">
+                <a href="{% url 'edit_personal_information' %}" class="btn btn-primary edit-profile-button">{% trans "Edit profile" %}</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

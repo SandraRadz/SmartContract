@@ -1,0 +1,33 @@
+.btn a, .btn a:hover {
+  color: white;
+  text-decoration: none ;
+}
+
+.account-container{
+  margin-top: 40px;
+}
+
+.account-info-row{
+  margin-top: 15px;
+}
+
+.edit-button-container{
+  position: relative;
+}
+
+.edit-profile-button{
+  position: absolute;
+  right: 0px;
+}
+
+.account-info-row-title{
+  font-weight: bold;
+}
+
+.account-password-row{
+  margin-top: 30px;
+}
+
+.red-text{
+  color: red;
+}
