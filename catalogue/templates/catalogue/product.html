@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ object.name }}</h1>
+        <div>{{ object.description }}</div>
+        <div style="color: dodgerblue; font-size: 16px"><b>{{ object.price }} {{ object.currency }}</b></div>
+        <div style="font-size: 12px">Продавець: {{ object.owner }}</div>
+
+        <button class="btn btn-info" style="width: 100px;">Buy</button>
+    </div>
+{% endblock %}
