@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
                 'is_active', 'is_staff', 'is_verified',
                 'is_superuser',
                 'groups',
-                'user_permissions',
+                'user_permissions', 'status'
             )}),
         (_('Important dates'), {
             'fields': ('last_login', 'date_joined')}),

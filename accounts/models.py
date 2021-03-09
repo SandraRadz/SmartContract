@@ -56,6 +56,12 @@ class UserManager(BaseUserManager):
         return self.get(email__iexact=email)
 
 
+class UserStatus(models.TextChoices):
+    DEFAULT = "default", "DEFAULT"
+    REQUEST_SOLVER = "request_solver", "REQUEST_SOLVER"
+    SOLVER = "solver", "SOLVER"
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     """
     A model which implements the authentication model.
@@ -71,6 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('verify status'),
         default=False,
         help_text=_('Designates whether the user has verified his email.'), )
+    status = models.CharField(max_length=20, choices=UserStatus.choices, default=UserStatus.DEFAULT)
 
     is_staff = models.BooleanField(
         _('staff status'),

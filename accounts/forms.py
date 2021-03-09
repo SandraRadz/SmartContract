@@ -10,7 +10,7 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
 )
 from django.conf import settings
-from .models import User
+from .models import User, UserStatus
 
 
 class UserChangeForm(BaseUserChangeForm):
@@ -54,6 +54,8 @@ class UserCreationForm(BaseUserCreationForm):
         strip=False,
         help_text=_("Please re-enter your password for verification purposes."),
     )
+    request_solver_status = forms.BooleanField(
+        label=_("Request solver status"))
 
     class Meta:
         model = User
@@ -82,6 +84,9 @@ class UserCreationForm(BaseUserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        if self.cleaned_data["request_solver_status"]:
+            user.status = UserStatus.REQUEST_SOLVER
+            user.save()
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
