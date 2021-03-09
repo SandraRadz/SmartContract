@@ -1,0 +1,44 @@
+version: "3.6"
+
+services:
+
+  postgres:
+    image: escrow_system_image_postgres
+    build:
+      context: ./postgres
+    environment:
+      - POSTGRES_DB
+      - DB_USER=$POSTGRES_USER
+      - DB_PASS=$POSTGRES_PASSWORD
+      - POSTGRES_PASSWORD
+    container_name: escrow_system_postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "127.0.0.1:$POSTGRES_EXTERNAL_PORT:5432"
+
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    image: escrow_system_image_app
+    container_name: escrow_system_app
+    volumes:
+      - .:/app
+    ports:
+      - "127.0.0.1:$APP_EXTERNAL_PORT:8000"
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f localhost:8000/health_check/ || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
