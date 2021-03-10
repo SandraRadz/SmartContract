@@ -1,12 +1,27 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/catalogue/styles.css' %}">
+{% endblock %}
+
 {% block content %}
     <div class="container">
-        <h1>{{ object.name }}</h1>
-        <div>{{ object.description }}</div>
-        <div style="color: dodgerblue; font-size: 16px"><b>{{ object.price }} {{ object.currency }}</b></div>
-        <div style="font-size: 12px">Продавець: {{ object.owner }}</div>
-
-        <button class="btn btn-info" style="width: 100px;">Buy</button>
+        <div class="product-container fullscreen">
+            <div class="product-title">
+                <h1>{{ object.name }}</h1>
+                <div style="font-size: 12px">Продавець: {{ object.owner }}</div>
+            </div>
+            <div class="product-description">
+                {{ object.description }}
+            </div>
+            <div class="product-price">
+                <b>{{ product.price }} {{ product.currency }}</b>
+            </div>
+            <div class="product-footer">
+                <button class="product-price-btn btn btn-info">Buy</button>
+            </div>
+        </div>
     </div>
 {% endblock %}
