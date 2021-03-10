@@ -18,3 +18,15 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
+
+def my_sales_view(request):
+    context = {}
+    context["products"] = Product.objects.all()
+    return render(request, "catalogue/my_sales.html", context=context)
+
+
+def my_shopping_view(request):
+    context = {}
+    context["products"] = Product.objects.all()
+    return render(request, "catalogue/my_shopping.html", context=context)
+

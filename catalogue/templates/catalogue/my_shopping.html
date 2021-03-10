@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/catalogue/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% for product in products %}
+            <div style="margin-top: 10px; margin-bottom: 30px">
+                <a href="{% url 'product-detail' product.pk %}" style="font-size: 20px"><b>{{ product.name }}</b></a>
+                <div>{{ product.description }}</div>
+                <div style="color: dodgerblue"><b>{{ product.price }} {{ product.currency }}</b></div>
+                <div style="font-size: 12px">{{ product.owner }}</div>
+                <button class="btn btn-info">Confirm the delivery</button>
+                <button class="btn btn-danger">I have problems</button>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

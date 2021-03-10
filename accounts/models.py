@@ -117,6 +117,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_usable_password(self) -> bool:
         return super().has_usable_password()
 
+    def default_user(self):
+        return self.status == "default"
+
     has_usable_password.boolean = True
 
     @property

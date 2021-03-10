@@ -11,7 +11,16 @@
   </button>
   <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end" id="navbarNav">
     <ul class="navbar-nav">
+
         {% if request.user.is_authenticated %}
+            {% if request.user.default_user %}
+                <li class="nav-item">
+                    <a class="nav-link button" href="{% url 'my-sales' %}">My Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link button" href="{% url 'my-shopping' %}">My Shopping</a>
+                </li>
+            {% endif %}
             <li class="dropdown">
               <a class="dropdown-toggle" type="button" id="accountDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ request.user}}
