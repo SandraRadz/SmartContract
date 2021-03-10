@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n core_tags static %}
+
+{% block content %}
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% include "forms/form_fields.html" with form=form %}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock %}
