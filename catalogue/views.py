@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import DetailView
 
-from catalogue.forms import ProductForm
+from accounts.models import User
+from catalogue.forms import ProductForm, SolversForm
 from catalogue.models import Product, PurchaseStatus
 
 
@@ -19,6 +20,24 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+def product_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    if request.method == "POST":
+        form = SolversForm(product, request.POST)
+        if form.is_valid():
+            solver = form.cleaned_data["solver"]
+            print(solver)
+            solver_obj = User.objects.filter(pk=solver).first()
+            product.final_solver = solver_obj
+            product.buyer = request.user
+            product.save()
+            return redirect(reverse("my-shopping"))
+    else:
+        form = SolversForm(product)
+    context = {"form": form, "object": product}
+    return render(request, "catalogue/product.html", context=context)
 
 
 def my_sales_view(request):
@@ -42,6 +61,9 @@ def create_new_sale(request):
             price = form.cleaned_data["price"]
             product = Product(name=name, description=description, price=price, owner=request.user)
             product.save()
+            solvers = form.cleaned_data["solvers"]
+            for solver in solvers:
+                product.solver_list.add(solver)
             return redirect(reverse("homepage"))
     else:
         form = ProductForm()

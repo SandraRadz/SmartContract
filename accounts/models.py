@@ -78,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text=_('Designates whether the user has verified his email.'), )
     status = models.CharField(max_length=20, choices=UserStatus.choices, default=UserStatus.DEFAULT)
-
+    # escrow_hash = models.CharField(max_length=255, blank=True, default="")
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,

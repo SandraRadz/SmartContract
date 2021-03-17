@@ -20,7 +20,7 @@
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
                 <div class="product-footer">
-                    <button class="product-price-btn btn btn-info">Buy</button>
+                    <a href="{% url 'product-detail' product.pk %}" class="product-price-btn btn btn-info">View Details</a>
                 </div>
             </div>
         {% endfor %}
