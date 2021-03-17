@@ -3,12 +3,12 @@ from django.urls import reverse
 from django.views.generic import DetailView
 
 from catalogue.forms import ProductForm
-from catalogue.models import Product
+from catalogue.models import Product, PurchaseStatus
 
 
 def home(request):
     context = {"title": "Smart Contract"}
-    context["products"] = Product.objects.all()
+    context["products"] = Product.objects.filter(status=PurchaseStatus.NEW).order_by('-created_at')
     return render(request, "catalogue/home.html", context=context)
 
 
@@ -23,13 +23,13 @@ class ProductDetailView(DetailView):
 
 def my_sales_view(request):
     context = {}
-    context["products"] = Product.objects.all()
+    context["products"] = Product.objects.filter(owner=request.user).order_by('-updated_at')
     return render(request, "catalogue/my_sales.html", context=context)
 
 
 def my_shopping_view(request):
     context = {}
-    context["products"] = Product.objects.all()
+    context["products"] = Product.objects.filter(buyer=request.user).order_by('-updated_at')
     return render(request, "catalogue/my_shopping.html", context=context)
 
 
@@ -47,3 +47,7 @@ def create_new_sale(request):
         form = ProductForm()
         context = {"form": form}
         return render(request, "catalogue/create_new_sale.html", context=context)
+
+
+def buy_product_view(request):
+    pass

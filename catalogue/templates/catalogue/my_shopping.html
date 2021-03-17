@@ -18,10 +18,12 @@
                 <div class="product-price">
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
-                <div class="product-footer-two">
-                    <button class="product-btn btn btn-info">Confirm the delivery</button>
-                    <button class="product-btn btn btn-danger">I have problems</button>
-                </div>
+                {% if product.status == "sent" %}
+                    <div class="product-footer-two">
+                        <button class="product-btn btn btn-info">Confirm the delivery</button>
+                        <button class="product-btn btn btn-danger">I have problems</button>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
