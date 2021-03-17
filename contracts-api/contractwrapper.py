@@ -148,20 +148,16 @@ if __name__ == '__main__':
 
     wrapper = ContractWrapper(infura, metamask, timeout=10000)
 
-    # print(wrapper.call('0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0', 'state'))
+    # print(wrapper.confirm('0xc56BF879976E26600C30186Fe3bB20bEfc58d4C7'))
 
-    # contract = wrapper.get_contract('0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0')
+    # print(wrapper.call('0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0', 'buyer'))
 
-    # print(contract.get_function_by_name('state').__call__().call())
-
-    # print(wrapper.confirm("0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0"))
-
-    print(
-        wrapper.create(
-            "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-            "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-            "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-            100,
-            "1"
-        )
-    )
+    # print(
+    #     wrapper.create(
+    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+    #         100,
+    #         "1"
+    #     )
+    # )
