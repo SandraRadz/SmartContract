@@ -1,6 +1,5 @@
 pragma solidity >=0.4.22 <0.9.0;
 
-
 contract Escrow {
     uint public reward;
     uint public value;
@@ -17,17 +16,32 @@ contract Escrow {
     enum State { Created, Locked, Troubled, Inactive }
     State public state;
 
-    constructor(address payable _buyer, address payable _seller, address payable _solver, uint _value, string memory item_id) public payable {
+    constructor(address payable _seller, address payable _solver, string memory item_id) public payable {
         item = item_id;
         seller = _seller;
         solver = _solver; 
-        admin = address(0xD36549D00D81F35f7e44d48A46A966616fB2f945);
-        value = _value;
-        buyer = _buyer;
-        reward = _value / 50;
+        admin = address(0xdD870fA1b7C4700F2BD7f44238821C26f7392148);
+        value = msg.value;
+        buyer = msg.sender;
+        reward = msg.value / 50;
         admin.call.value(reward / 2);
     }
     
+    modifier onlyBuyer() {
+        require(msg.sender == buyer);
+        _;
+    }
+
+    modifier onlySeller() {
+        require(msg.sender == seller);
+        _;
+    }
+    
+    modifier onlySolver() {
+        require(msg.sender == solver);
+        _;
+    }
+
     modifier inState(State _state) {
         require(state == _state);
         _;
@@ -45,6 +59,7 @@ contract Escrow {
     // the contract is locked.
     function abort()
         public
+        onlyBuyer
         inState(State.Created)
     {
         emit Aborted();
@@ -56,6 +71,7 @@ contract Escrow {
     // This will lock ether.
     function sent()
         public
+        onlySeller
         inState(State.Created)
     {
         emit Sent();
@@ -66,6 +82,7 @@ contract Escrow {
     // This will release the locked ether.
     function confirmReceived()
         public
+        onlyBuyer
         inState(State.Locked)
     {
         emit ItemReceived();
@@ -84,6 +101,7 @@ contract Escrow {
     // the refund should be payed or not.
     function problem(string memory _problem_description)
         public
+        onlyBuyer
         inState(State.Locked)
     {    
         emit ItemNotOk();
@@ -94,6 +112,7 @@ contract Escrow {
     // Solver can return the transfer back to the buyer.
     function refund()
         public
+        onlySolver
         inState(State.Troubled)
     {    
         emit Refund();
@@ -105,6 +124,7 @@ contract Escrow {
     // Solver can transfer the payment to the seller.
     function no_refund()
         public
+        onlySolver
         inState(State.Troubled)
     {    
         emit ItemReceived();
