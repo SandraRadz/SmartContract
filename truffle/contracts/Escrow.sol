@@ -21,7 +21,7 @@ contract Escrow {
         item = item_id;
         seller = _seller;
         solver = _solver; 
-        admin = address(0xdD870fA1b7C4700F2BD7f44238821C26f7392148);
+        admin = address(0xD36549D00D81F35f7e44d48A46A966616fB2f945);
         value = _value;
         buyer = _buyer;
         reward = _value / 50;
