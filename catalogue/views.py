@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import DetailView
@@ -13,15 +14,6 @@ def home(request):
     return render(request, "catalogue/home.html", context=context)
 
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = "catalogue/product.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
 def product_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     if request.method == "POST":
@@ -31,6 +23,7 @@ def product_view(request, product_id):
             solver_obj = User.objects.filter(pk=solver).first()
             product.final_solver = solver_obj
             product.buyer = request.user
+            product.status = PurchaseStatus.ORDER
             product.save()
             return redirect(reverse("my-shopping"))
     else:
@@ -70,5 +63,23 @@ def create_new_sale(request):
         return render(request, "catalogue/create_new_sale.html", context=context)
 
 
-def buy_product_view(request):
-    pass
+def approve_send_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.status = PurchaseStatus.SENT
+    product.save()
+    return redirect(reverse("my-sales"))
+
+
+def approve_receive_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.status = PurchaseStatus.RECEIVED
+    product.save()
+    return redirect(reverse("my-shopping"))
+
+
+def approve_error_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.status = PurchaseStatus.PROBLEM
+    product.save()
+    messages.error(request, 'Your solver will contact you in the nearest time')
+    return redirect(reverse("my-shopping"))

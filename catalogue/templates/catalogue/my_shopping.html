@@ -20,8 +20,8 @@
                 </div>
                 {% if product.status == "sent" %}
                     <div class="product-footer-two">
-                        <button class="product-btn btn btn-info">Confirm the delivery</button>
-                        <button class="product-btn btn btn-danger">I have problems</button>
+                        <a href="{% url 'receive_product' product.pk %}" class="product-btn btn btn-info">Confirm the delivery</a>
+                        <a href="{% url 'problem_product' product.pk %}" class="product-btn btn btn-danger">I have problems</a>
                     </div>
                 {% endif %}
             </div>
