@@ -65,6 +65,7 @@ class UserCreationForm(BaseUserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
+        self.fields['request_solver_status'].required = False
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower()
@@ -100,12 +101,14 @@ class EditUserForm(forms.ModelForm):
             'first_name',
             'last_name',
             'email',
+            'escrow_hash'
         )
 
     def __init__(self, *args, **kwargs):
         super(EditUserForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
+        self.fields['escrow_hash'].required = True
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -123,7 +126,11 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        fields = ('email', 'first_name', 'last_name', 'escrow_hash')
+
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['escrow_hash'].required = True
 
 
 class UserPasswordSetupForm(forms.Form):

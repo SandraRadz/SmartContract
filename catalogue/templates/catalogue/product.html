@@ -19,9 +19,13 @@
             <div class="product-price">
                 <b>{{ product.price }} {{ product.currency }}</b>
             </div>
-            <div class="product-footer">
-                <button class="product-price-btn btn btn-info">Buy</button>
-            </div>
+            {% if object.status == "new" %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="product-price-btn btn btn-info">Buy</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

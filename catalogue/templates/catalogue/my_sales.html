@@ -19,9 +19,11 @@
                 <div class="product-price">
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
-                <div class="product-footer">
-                    <button class="product-price-btn btn btn-info">Confirm the sending</button>
-                </div>
+                {% if product.status == "order" %}
+                    <div class="product-footer">
+                        <a href="{% url 'send_product' product.pk %}" class="product-price-btn btn btn-info">Confirm the sending</a>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
