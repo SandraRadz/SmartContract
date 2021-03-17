@@ -1,8 +1,17 @@
 import json
 import logging
 import pathlib
+from typing import NoReturn, Union, Type, Dict, Any
 
 from web3 import Web3
+from web3.contract import ContractConstructor, Contract, ContractFunction
+
+__all__ = [
+    'ContractException',
+    'W3ProviderNotConnectedException',
+    'FunctionNotFoundException',
+    'ContractWrapper'
+]
 
 
 class ContractException(Exception):
@@ -20,7 +29,7 @@ class FunctionNotFoundException(ContractException):
 class ContractWrapper:
     PROJECT_ROOT = pathlib.Path(__file__).parent.parent
 
-    def __init__(self, infura_key, metamask_private_key, timeout=600):
+    def __init__(self, infura_key: str, metamask_private_key: str, timeout: int = 600) -> None:
         logging.info("Initialized Contract Wrapper")
 
         self._infura_key = infura_key
@@ -34,7 +43,7 @@ class ContractWrapper:
 
         self._prepare()
 
-    def _prepare(self):
+    def _prepare(self) -> NoReturn:
         self._read_contract_data()
 
         if not self.ready_check():
@@ -44,21 +53,18 @@ class ContractWrapper:
 
         logging.info("Contract Wrapper Initialized Successfully")
 
-    def _read_contract_data(self):
+    def _read_contract_data(self) -> NoReturn:
         with open(self.PROJECT_ROOT / 'truffle' / 'Contract.json') as input_file:
             self._contract_data = json.load(input_file)
 
-    def _build_contract(self, address=None):
+    def _build_contract(self, address: str = None) -> Union[Type[Contract], Contract]:
         return self._w3.eth.contract(
             abi=self._contract_data['abi'],
             bytecode=self._contract_data['bytecode'],
             address=address
         )
 
-    def _call(self, function_name):
-        pass
-
-    def _build_transaction(self, contract):
+    def _build_transaction(self, contract: Union[ContractConstructor, ContractFunction]) -> Dict:
         construct_txn = contract.buildTransaction({
             'from': self._account.address,
             'nonce': self._w3.eth.getTransactionCount(self._account.address),
@@ -82,13 +88,13 @@ class ContractWrapper:
         }
 
     @staticmethod
-    def _function_check(contract, function_name):
+    def _function_check(contract: Contract, function_name: str) -> bool:
         return function_name in list(map(lambda x: x.fn_name, contract.all_functions()))
 
-    def ready_check(self):
+    def ready_check(self) -> bool:
         return self._w3.isConnected()
 
-    def create(self, buyer, seller, solver, value, item_id):
+    def create(self, buyer: str, seller: str, solver: str, value: int, item_id: str) -> Dict:
         logging.info(f"Building contract with arguments = [{buyer}, {seller}, {solver}, {value}, {item_id}]")
 
         contract = self._build_contract()
@@ -100,7 +106,7 @@ class ContractWrapper:
 
         return result
 
-    def call(self, address, function_name):
+    def call(self, address: str, function_name: str) -> Any:
         contract = self.get_contract(address)
 
         logging.info(f"Called contract function with args: address='{address}',fn='{function_name}'")
@@ -110,7 +116,7 @@ class ContractWrapper:
         else:
             raise FunctionNotFoundException
 
-    def build(self, address, function_name):
+    def build(self, address: str, function_name: str) -> Dict:
         contract = self.get_contract(address)
 
         logging.info(f"Called building contract with args: address='{address}',fn='{function_name}'")
@@ -120,7 +126,7 @@ class ContractWrapper:
         else:
             raise FunctionNotFoundException
 
-    def send(self, address):
+    def send(self, address: str) -> Dict:
         logging.info(f"Sending contract, address='{address}'")
 
         result = self.build(address, 'sent')
@@ -129,7 +135,7 @@ class ContractWrapper:
 
         return result
 
-    def confirm(self, address):
+    def confirm(self, address: str) -> Dict:
         logging.info(f"Confirming receiving contract, address='{address}'")
 
         result = self.build(address, 'confirmReceived')
@@ -138,26 +144,22 @@ class ContractWrapper:
 
         return result
 
-    def get_contract(self, address):
+    def get_contract(self, address: str) -> Union[Type[Contract], Contract]:
         return self._build_contract(address)
 
+# if __name__ == '__main__':
+# wrapper = ContractWrapper(infura, metamask, timeout=10000)
 
-if __name__ == '__main__':
-    metamask = 'a3d3eb24d66c13a91f085e8431526540c243f88d147613a24edb05110d732a6a'
-    infura = 'bc71a2e7b3884039b7903a2870ca56b3'
+# print(wrapper.confirm('0xc56BF879976E26600C30186Fe3bB20bEfc58d4C7'))
 
-    wrapper = ContractWrapper(infura, metamask, timeout=10000)
+# print(wrapper.call('0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0', 'buyer'))
 
-    # print(wrapper.confirm('0xc56BF879976E26600C30186Fe3bB20bEfc58d4C7'))
-
-    # print(wrapper.call('0xAC4Ec8a1d878923388395381BDA9FC2E7760b6c0', 'buyer'))
-
-    # print(
-    #     wrapper.create(
-    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-    #         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
-    #         100,
-    #         "1"
-    #     )
-    # )
+# print(
+#     wrapper.create(
+#         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+#         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+#         "0xD36549D00D81F35f7e44d48A46A966616fB2f945",
+#         100,
+#         "1"
+#     )
+# )

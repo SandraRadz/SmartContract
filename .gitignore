@@ -317,5 +317,3 @@ fabric.properties
 .idea/sonarlint
 
 tmp/
-
-contracts-api/venv

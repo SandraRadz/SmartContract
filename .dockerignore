@@ -1,4 +1,4 @@
 venv/
 tmp/
 truffle/
-contracts-api/
+contracts_api/
