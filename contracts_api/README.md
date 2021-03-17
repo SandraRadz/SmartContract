@@ -19,12 +19,10 @@ from contracts_api import ContractWrapper
 
 wrapper = ContractWrapper('<INFURA_KEYY>', '<METAMASK_PRIVATE_KEY>', timeout=600)  # default timeout value is 600
 
-buyer_address = '0x527858A8Dd12Ae602f443eaff0c148cB5cb916F7'
 seller_address = '0xC819A40FD16b77608289dcB23AdD77Ca2D81F66D'
 solver_address = '0x1241fd2a59AB1168B803C32318B7855726b70356'
 
 wrapper.create(
-    buyer_address,  # str 
     seller_address,  # str
     solver_address,  # str
     100,  # price of the product: should be int
