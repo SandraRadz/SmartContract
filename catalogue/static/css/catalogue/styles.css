@@ -3,7 +3,10 @@
     border: 1px solid #dee2e6;
     border-radius: 4px;
     margin-top: 10px; 
+    margin-right: 5px; 
+    margin-left: 10px;
     margin-bottom: 30px;
+    display: inline-block;
     width: 350px;
     box-shadow: 0px 1px 4px 1px rgba(118,118,118,0.75);
     -webkit-box-shadow: 0px 1px 4px 1px rgba(118,118,118,0.75);
@@ -11,7 +14,7 @@
 }
 
 .product-container.fullscreen{
-    width: unset;
+    width: 100%;
 }
 
 .product-title, .product-description, .product-price{
@@ -34,4 +37,8 @@
 
 .product-footer-two {
   margin-bottom: 12px;
+}
+
+.full-width-btn{
+    display: block;
 }
