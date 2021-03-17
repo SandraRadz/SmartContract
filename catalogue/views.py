@@ -28,7 +28,6 @@ def product_view(request, product_id):
         form = SolversForm(product, request.POST)
         if form.is_valid():
             solver = form.cleaned_data["solver"]
-            print(solver)
             solver_obj = User.objects.filter(pk=solver).first()
             product.final_solver = solver_obj
             product.buyer = request.user
