@@ -23,7 +23,11 @@
                 <form action="" method="post">
                     {% csrf_token %}
                     {{ form }}
-                    <button class="product-price-btn btn btn-info">Buy</button>
+                    {% if request.user.is_authenticated %}
+                        <button class="product-price-btn btn btn-info">Buy</button>
+                    {% else %}
+                        <div>Please, log in to buy this product</div>
+                    {% endif %}
                 </form>
             {% endif %}
         </div>
