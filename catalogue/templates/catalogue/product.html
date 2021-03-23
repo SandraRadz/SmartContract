@@ -26,7 +26,7 @@
                     {% if request.user.is_authenticated %}
                         <button class="product-price-btn btn btn-info">Buy</button>
                     {% else %}
-                        <div>Please, log in to buy this product</div>
+                        <div style="color: red">Please, log in to buy this product</div>
                     {% endif %}
                 </form>
             {% endif %}
