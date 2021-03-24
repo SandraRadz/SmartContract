@@ -48,6 +48,12 @@ def my_shopping_view(request):
     return render(request, "catalogue/my_shopping.html", context=context)
 
 
+def solver_view(request):
+    context = {}
+    context["products"] = Product.objects.filter(final_solver=request.user, status=PurchaseStatus.PROBLEM).order_by('-updated_at')
+    return render(request, "catalogue/solver_page.html", context=context)
+
+
 def create_new_sale(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
