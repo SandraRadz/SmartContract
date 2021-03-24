@@ -26,6 +26,10 @@ class FunctionNotFoundException(ContractException):
     pass
 
 
+class InvalidContractFunctionCall(ContractException):
+    pass
+
+
 class ContractWrapper:
     PROJECT_ROOT = pathlib.Path(__file__).parent.parent
 
@@ -138,7 +142,11 @@ class ContractWrapper:
     def send(self, address: str) -> Dict:
         logging.info(f"Sending contract, address='{address}'")
 
-        result = self.build(address, 'sent')
+        contract = self.get_contract(address)
+        if contract.functions.state().call() != 0:
+            raise InvalidContractFunctionCall("Contract state is not Created. Cannot call 'sent()' function on it.")
+
+        result = self._build_transaction(contract.functions.sent())
 
         logging.info(f"Contract was sent successfully: {result['tx_hash']}")
 
@@ -147,7 +155,14 @@ class ContractWrapper:
     def confirm(self, address: str) -> Dict:
         logging.info(f"Confirming receiving contract, address='{address}'")
 
-        result = self.build(address, 'confirmReceived')
+        contract = self.get_contract(address)
+
+        if contract.functions.state().call() != 1:
+            raise InvalidContractFunctionCall(
+                "Contract state is not Created. Cannot call 'confirmReceived()' function on it."
+            )
+
+        result = self._build_transaction(contract.functions.confirmReceived())
 
         logging.info(f"Contract receiving was confirmed successfully: {result['tx_hash']}")
 
@@ -165,8 +180,9 @@ if __name__ == '__main__':
 
     # print(wrapper.send('0xE4EAB7DAa6582307118DD8b415a385A763A45eFA'))
 
-    print(wrapper.confirm('0xE4EAB7DAa6582307118DD8b415a385A763A45eFA'))
+    # print(wrapper.confirm('0xE4EAB7DAa6582307118DD8b415a385A763A45eFA'))
 
+    # print(type(wrapper.get_contract('0xE4EAB7DAa6582307118DD8b415a385A763A45eFA').functions.state().call()))
     # print(wrapper.call('0xE4EAB7DAa6582307118DD8b415a385A763A45eFA', 'state'))
 
     # print(
