@@ -18,7 +18,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default="")
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=10, default="грн")
+    currency = models.CharField(max_length=10, default="wei")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="my_products")
     status = models.CharField(max_length=20, choices=PurchaseStatus.choices, default=PurchaseStatus.NEW)
     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="bought_products")
