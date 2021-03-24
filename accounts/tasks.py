@@ -1,6 +1,5 @@
 import logging
 
-from celery import shared_task
 from django.contrib.auth import get_user_model
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
@@ -9,9 +8,10 @@ from django.conf import settings
 
 from accounts.mail_sender import send_html
 from accounts.token_creator import TokenGenerator
+from smartcontract import celery_app
 
 
-@shared_task
+@celery_app.task
 def send_confirmation_email(user_id):
     UserModel = get_user_model()
     try:

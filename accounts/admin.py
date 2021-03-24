@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
                 'is_active', 'is_staff', 'is_verified',
                 'is_superuser',
                 'groups',
-                'user_permissions', 'status', 'escrow_hash'
+                'user_permissions', 'status', 'escrow_hash', 'private_hash'
             )}),
         (_('Important dates'), {
             'fields': ('last_login', 'date_joined')}),

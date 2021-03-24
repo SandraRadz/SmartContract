@@ -42,3 +42,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+
+  celery:
+    container_name: celery
+    build: .
+    restart: always
+    env_file: .env
+    command: celery -A smartcontract worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis

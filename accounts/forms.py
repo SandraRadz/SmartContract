@@ -126,11 +126,12 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'escrow_hash')
+        fields = ('email', 'first_name', 'last_name', 'escrow_hash', 'private_hash')
 
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['escrow_hash'].required = True
+        self.fields['private_hash'].required = True
 
 
 class UserPasswordSetupForm(forms.Form):

@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 from accounts.models import User
 from catalogue.forms import ProductForm, SolversForm
 from catalogue.models import Product, PurchaseStatus
+from .tasks import submit_new_smart_contract, send_product, receive_product
 
 
 def home(request):
@@ -22,9 +23,12 @@ def product_view(request, product_id):
             solver = form.cleaned_data["solver"]
             solver_obj = User.objects.filter(pk=solver).first()
             product.final_solver = solver_obj
-            product.buyer = request.user
+            buyer = request.user
+            product.buyer = buyer
             product.status = PurchaseStatus.ORDER
             product.save()
+            submit_new_smart_contract.delay(product.owner.escrow_hash, solver_obj.escrow_hash, buyer.private_hash,
+                                            product.price, product.id)
             return redirect(reverse("my-shopping"))
     else:
         form = SolversForm(product)
@@ -67,6 +71,7 @@ def approve_send_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     product.status = PurchaseStatus.SENT
     product.save()
+    send_product.delay(product.owner.private_hash, product.contract_address)
     return redirect(reverse("my-sales"))
 
 
@@ -74,6 +79,7 @@ def approve_receive_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     product.status = PurchaseStatus.RECEIVED
     product.save()
+    receive_product.delay(product.buyer.private_hash, product.contract_address)
     return redirect(reverse("my-shopping"))
 
 
