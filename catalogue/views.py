@@ -25,7 +25,7 @@ def product_view(request, product_id):
             product.final_solver = solver_obj
             buyer = request.user
             product.buyer = buyer
-            product.status = PurchaseStatus.ORDER
+            product.status = PurchaseStatus.PENDING_ORDER
             product.save()
             submit_new_smart_contract.delay(product.owner.escrow_hash, solver_obj.escrow_hash, buyer.private_hash,
                                             product.price, product.id)
@@ -46,6 +46,12 @@ def my_shopping_view(request):
     context = {}
     context["products"] = Product.objects.filter(buyer=request.user).order_by('-updated_at')
     return render(request, "catalogue/my_shopping.html", context=context)
+
+
+def solver_view(request):
+    context = {}
+    context["products"] = Product.objects.filter(final_solver=request.user, status=PurchaseStatus.PROBLEM).order_by('-updated_at')
+    return render(request, "catalogue/solver_page.html", context=context)
 
 
 def create_new_sale(request):
@@ -69,17 +75,17 @@ def create_new_sale(request):
 
 def approve_send_view(request, product_id):
     product = Product.objects.get(pk=product_id)
-    product.status = PurchaseStatus.SENT
+    product.status = PurchaseStatus.PENDING_SEND
     product.save()
-    send_product.delay(product.owner.private_hash, product.contract_address)
+    send_product.delay(product.owner.private_hash, product.contract_address, product.id)
     return redirect(reverse("my-sales"))
 
 
 def approve_receive_view(request, product_id):
     product = Product.objects.get(pk=product_id)
-    product.status = PurchaseStatus.RECEIVED
+    product.status = PurchaseStatus.PENDING_RECEIVED
     product.save()
-    receive_product.delay(product.buyer.private_hash, product.contract_address)
+    receive_product.delay(product.buyer.private_hash, product.contract_address, product.id)
     return redirect(reverse("my-shopping"))
 
 

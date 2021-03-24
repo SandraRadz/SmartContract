@@ -119,7 +119,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         return super().has_usable_password()
 
     def default_user(self):
-        return self.status == "default"
+        return self.status == UserStatus.DEFAULT
+
+    def solver_user(self):
+        return self.status == UserStatus.SOLVER
 
     has_usable_password.boolean = True
 

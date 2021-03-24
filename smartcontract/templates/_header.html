@@ -20,6 +20,10 @@
                 <li class="nav-item">
                     <a class="nav-link button" href="{% url 'my-shopping' %}">My Shopping</a>
                 </li>
+            {% elif request.user.solver_user %}
+                <li class="nav-item">
+                    <a class="nav-link button" href="{% url 'solver-page' %}">Problem with Orders</a>
+                </li>
             {% endif %}
             <li class="dropdown" style="line-height: 2.5">
               <a class="dropdown-toggle" type="button" id="accountDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

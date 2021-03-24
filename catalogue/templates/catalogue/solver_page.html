@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/catalogue/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% for product in products %}
+            <div class="product-container">
+                <div class="product-title">
+                    <a href="{% url 'product-detail' product.pk %}" style="font-size: 20px"><b>{{ product.name }}</b></a>
+                </div>
+                <div class="product-description">
+                    {{ product.description }}
+                </div>
+                <div class="product-description">
+                    Owner: {{ product.owner.email }}
+                </div>
+                <div class="product-description">
+                    Buyer: {{ product.buyer.email }}
+                </div>
+                <div class="product-price">
+                    <b>{{ product.price }} {{ product.currency }}</b>
+                </div>
+                <div class="product-footer-two">
+                    {{ product.status }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

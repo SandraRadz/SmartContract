@@ -156,7 +156,7 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'account/login/'
 LOGOUT_URL = 'account/logout/'
 
-INFURA_KEYY = os.getenv('INFURA_KEYY')
+INFURA_KEY = os.getenv('INFURA_KEY')
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'

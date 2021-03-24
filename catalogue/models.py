@@ -5,8 +5,11 @@ from accounts.models import User
 
 class PurchaseStatus(models.TextChoices):
     NEW = "new", "NEW"
+    PENDING_ORDER = "pending_order", "PENDING ORDER"
     ORDER = "order", "ORDER"
+    PENDING_SEND = "pending_send", "PENDING SEND"
     SENT = "sent", "SENT"
+    PENDING_RECEIVED = "pending_received", "PENDING RECEIVED"
     RECEIVED = "received", "RECEIVED"
     PROBLEM = "problem", "PROBLEM"
 
@@ -15,7 +18,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default="")
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=10, default="грн")
+    currency = models.CharField(max_length=10, default="wei")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="my_products")
     status = models.CharField(max_length=20, choices=PurchaseStatus.choices, default=PurchaseStatus.NEW)
     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="bought_products")
