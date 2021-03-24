@@ -159,7 +159,7 @@ class ContractWrapper:
 
         if contract.functions.state().call() != 1:
             raise InvalidContractFunctionCall(
-                "Contract state is not Created. Cannot call 'confirmReceived()' function on it."
+                "Contract state is not Locked. Cannot call 'confirmReceived()' function on it."
             )
 
         result = self._build_transaction(contract.functions.confirmReceived())
