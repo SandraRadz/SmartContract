@@ -5,8 +5,11 @@ from accounts.models import User
 
 class PurchaseStatus(models.TextChoices):
     NEW = "new", "NEW"
+    PENDING_ORDER = "pending_order", "PENDING ORDER"
     ORDER = "order", "ORDER"
+    PENDING_SEND = "pending_send", "PENDING SEND"
     SENT = "sent", "SENT"
+    PENDING_RECEIVED = "pending_received", "PENDING RECEIVED"
     RECEIVED = "received", "RECEIVED"
     PROBLEM = "problem", "PROBLEM"
 
