@@ -20,7 +20,7 @@
                 </div>
                 {% if product.contract_address %}
                     <div style="margin-top: 20px; margin-bottom: 20px">
-                        <a href="https://ropsten.etherscan.io/address/{{product.contract_address}}" class="product-price-btn btn btn-info">View in Blockchain</a>
+                        <a href="https://ropsten.etherscan.io/address/{{product.contract_address}}" target="_blank" class="product-price-btn btn btn-info">View in Blockchain</a>
                     </div>
                 {% endif %}
                 {% if product.status == "pending_order" %}
