@@ -18,6 +18,11 @@
                 <div class="product-price">
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
+                {% if product.contract_address %}
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <a href="https://ropsten.etherscan.io/address/{{product.contract_address}}" class="product-price-btn btn btn-info">View in Blockchain</a>
+                    </div>
+                {% endif %}
                 {% if product.status == "pending_order" %}
                      <div class="product-footer-two">
                         Waiting for sending
