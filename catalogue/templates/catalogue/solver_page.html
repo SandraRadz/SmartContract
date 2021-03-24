@@ -15,6 +15,12 @@
                 <div class="product-description">
                     {{ product.description }}
                 </div>
+                <div class="product-description">
+                    Owner: {{ product.owner.email }}
+                </div>
+                <div class="product-description">
+                    Buyer: {{ product.buyer.email }}
+                </div>
                 <div class="product-price">
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
