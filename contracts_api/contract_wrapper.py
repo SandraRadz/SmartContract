@@ -119,23 +119,23 @@ class ContractWrapper:
 
         return result
 
-    def call(self, address: str, function_name: str) -> Any:
+    def call(self, address: str, function_name: str, *args: list, **kwargs: dict) -> Any:
         contract = self.get_contract(address)
 
         logging.info(f"Called contract function with args: address='{address}',fn='{function_name}'")
 
         if self._function_check(contract, function_name):
-            return contract.get_function_by_name(function_name).__call__().call()
+            return contract.get_function_by_name(function_name).__call__(*args, **kwargs).call()
         else:
             raise FunctionNotFoundException
 
-    def build(self, address: str, function_name: str) -> Dict:
+    def build(self, address: str, function_name: str, *args: list, **kwargs: dict) -> Dict:
         contract = self.get_contract(address)
 
         logging.info(f"Called building contract with args: address='{address}',fn='{function_name}'")
 
         if self._function_check(contract, function_name):
-            return self._build_transaction(contract.get_function_by_name(function_name).__call__())
+            return self._build_transaction(contract.get_function_by_name(function_name).__call__(*args, **kwargs))
         else:
             raise FunctionNotFoundException
 
