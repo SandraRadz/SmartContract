@@ -6,7 +6,7 @@ from django.views.generic import DetailView
 from accounts.models import User
 from catalogue.forms import ProductForm, SolversForm
 from catalogue.models import Product, PurchaseStatus
-from .tasks import submit_new_smart_contract, send_product, receive_product
+from .tasks import submit_new_smart_contract, send_product, receive_product, problem
 
 
 def home(request):
@@ -93,6 +93,7 @@ def approve_error_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     product.status = PurchaseStatus.PENDING_PROBLEM
     product.save()
+    problem.delay(product.buyer.private_hash, product.contract_address, product.id)
     messages.error(request, 'Your solver will contact you in the nearest time')
     return redirect(reverse("my-shopping"))
 
