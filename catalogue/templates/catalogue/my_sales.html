@@ -48,7 +48,7 @@
                      <div class="product-footer-two">
                         Received!
                     </div>
-                {% elif product.status in "pending_problem" %}
+                {% elif product.status == "pending_problem" %}
                      <div class="product-footer">
                         Pending Problem
                     </div>
@@ -56,7 +56,7 @@
                      <div class="product-footer">
                         Problem :(
                     </div>
-                {% elif product.status in "pending_refund" %}
+                {% elif product.status == "pending_refund" %}
                     <div class="product-footer">
                         Pending Refund
                     </div>
@@ -64,7 +64,7 @@
                      <div class="product-footer">
                         Pending No Refund
                     </div>
-                {% elif product.status in "refund" %}
+                {% elif product.status == "refund" %}
                     <div class="product-footer">
                         Refund
                     </div>
