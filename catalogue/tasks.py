@@ -81,7 +81,7 @@ def problem(buyer_private_hash, contract_address, product_id):
 
     wrapper.build(
         contract_address,  # smart contract address: str
-        'problem'
+        'problem', 'description'
     )
     product_obj.status = PurchaseStatus.PROBLEM
     product_obj.save()
