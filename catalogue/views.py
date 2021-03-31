@@ -91,7 +91,7 @@ def approve_receive_view(request, product_id):
 
 def approve_error_view(request, product_id):
     product = Product.objects.get(pk=product_id)
-    product.status = PurchaseStatus.PROBLEM
+    product.status = PurchaseStatus.PENDING_PROBLEM
     product.save()
     messages.error(request, 'Your solver will contact you in the nearest time')
     return redirect(reverse("my-shopping"))

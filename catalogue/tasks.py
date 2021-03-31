@@ -72,3 +72,16 @@ def no_refund(solver_private_hash, contract_address, product_id):
     )
     product_obj.status = PurchaseStatus.NO_REFUND_BY_SOLVER
     product_obj.save()
+
+
+@celery_app.task
+def problem(buyer_private_hash, contract_address, product_id):
+    wrapper = ContractWrapper(INFURA_KEY, buyer_private_hash, timeout=600)  # default timeout value is 600
+    product_obj = Product.objects.get(id=product_id)
+
+    wrapper.build(
+        contract_address,  # smart contract address: str
+        'problem'
+    )
+    product_obj.status = PurchaseStatus.PROBLEM
+    product_obj.save()
