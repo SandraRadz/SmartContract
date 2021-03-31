@@ -28,8 +28,8 @@
                     {{ product.status }}
                 </div>
                 <div class="product-footer-two">
-                    <a href="{% url 'refund_product' product.pk %}" class="product-btn btn btn-info">Refund</a>
-                    <a href="{% url 'no_refund_product' product.pk %}" class="product-btn btn btn-danger">No refund</a>
+                    <a href="{% url 'refund' product.pk %}" class="product-btn btn btn-info">Refund</a>
+                    <a href="{% url 'no_refund' product.pk %}" class="product-btn btn btn-danger">No refund</a>
                 </div>
             </div>
         {% endfor %}
