@@ -6,7 +6,7 @@ from django.views.generic import DetailView
 from accounts.models import User
 from catalogue.forms import ProductForm, SolversForm
 from catalogue.models import Product, PurchaseStatus
-from .tasks import submit_new_smart_contract, send_product, receive_product, problem
+from .tasks import submit_new_smart_contract, send_product, receive_product, problem, refund, no_refund
 
 
 def home(request):
@@ -102,7 +102,7 @@ def refund_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     product.status = PurchaseStatus.PENDING_REFUND
     product.save()
-    receive_product.delay(request.user.private_hash, product.contract_address, product.id)
+    refund.delay(request.user.private_hash, product.contract_address, product.id)
     return redirect(reverse("solver-page"))
 
 
@@ -110,5 +110,5 @@ def no_refund_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     product.status = PurchaseStatus.PENDING_NO_REFUND
     product.save()
-    receive_product.delay(request.user.private_hash, product.contract_address, product.id)
+    no_refund.delay(request.user.private_hash, product.contract_address, product.id)
     return redirect(reverse("solver-page"))
