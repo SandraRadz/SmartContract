@@ -95,3 +95,19 @@ def approve_error_view(request, product_id):
     product.save()
     messages.error(request, 'Your solver will contact you in the nearest time')
     return redirect(reverse("my-shopping"))
+
+
+def refund_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.status = PurchaseStatus.PENDING_REFUND
+    product.save()
+    receive_product.delay(request.user.private_hash, product.contract_address, product.id)
+    return redirect(reverse("solver-page"))
+
+
+def no_refund_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.status = PurchaseStatus.PENDING_NO_REFUND
+    product.save()
+    receive_product.delay(request.user.private_hash, product.contract_address, product.id)
+    return redirect(reverse("solver-page"))

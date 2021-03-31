@@ -11,7 +11,12 @@ class PurchaseStatus(models.TextChoices):
     SENT = "sent", "SENT"
     PENDING_RECEIVED = "pending_received", "PENDING RECEIVED"
     RECEIVED = "received", "RECEIVED"
+    PENDING_PROBLEM = "pending_problem", "PENDING_PROBLEM"
     PROBLEM = "problem", "PROBLEM"
+    PENDING_REFUND = "pending_refund", "PENDING_REFUND"
+    PENDING_NO_REFUND = "pending_no_refund", "PENDING_NO_REFUND"
+    REFUND_BY_SOLVER = "refund", "REFUND_BY_SOLVER"
+    NO_REFUND_BY_SOLVER = "no_refund", "NO_REFUND_BY_SOLVER"
 
 
 class Product(models.Model):

@@ -24,15 +24,15 @@
                     </div>
                 {% endif %}
                 {% if product.status == "pending_order" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Waiting for sending
                     </div>
                 {% elif product.status == "order" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Waiting for sending
                     </div>
                 {% elif product.status == "pending_send" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Waiting for sending
                     </div>
                 {% elif product.status == "sent" %}
@@ -41,16 +41,36 @@
                         <a href="{% url 'problem_product' product.pk %}" class="product-btn btn btn-danger">I have problems</a>
                     </div>
                 {% elif product.status == "pending_received" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Pending Received
                     </div>
                 {% elif product.status == "received" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Received!
                     </div>
+                {% elif product.status in "pending_problem" %}
+                     <div class="product-footer">
+                        Pending Problem
+                    </div>
                 {% elif product.status == "problem" %}
-                     <div class="product-footer-two">
+                     <div class="product-footer">
                         Problem :(
+                    </div>
+                {% elif product.status in "pending_refund" %}
+                    <div class="product-footer">
+                        Pending Refund
+                    </div>
+                {% elif product.status == "pending_no_refund" %}
+                     <div class="product-footer">
+                        Pending No Refund
+                    </div>
+                {% elif product.status in "refund" %}
+                    <div class="product-footer">
+                        Refund
+                    </div>
+                {% elif product.status == "no_refund" %}
+                     <div class="product-footer">
+                        No Refund
                     </div>
                 {% endif %}
             </div>

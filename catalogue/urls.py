@@ -1,7 +1,7 @@
 from django.urls import path
 
 from catalogue.views import home, my_sales_view, my_shopping_view, create_new_sale, product_view, approve_error_view, \
-    approve_receive_view, approve_send_view, solver_view
+    approve_receive_view, approve_send_view, solver_view, refund_view, no_refund_view
 
 urlpatterns = [
     path("", home, name="homepage"),
@@ -13,4 +13,6 @@ urlpatterns = [
     path("send_product/<int:product_id>/", approve_send_view, name="send_product"),
     path("receive_product/<int:product_id>/", approve_receive_view, name="receive_product"),
     path("problem_product/<int:product_id>/", approve_error_view, name="problem_product"),
+    path("refund_product/<int:product_id>/", refund_view, name="refund"),
+    path("no_refund_product/<int:product_id>/", no_refund_view, name="no_refund"),
 ]

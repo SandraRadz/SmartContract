@@ -46,3 +46,29 @@ def receive_product(buyer_private_hash, contract_address, product_id):
     )
     product_obj.status = PurchaseStatus.RECEIVED
     product_obj.save()
+
+
+@celery_app.task
+def refund(solver_private_hash, contract_address, product_id):
+    wrapper = ContractWrapper(INFURA_KEY, solver_private_hash, timeout=600)  # default timeout value is 600
+    product_obj = Product.objects.get(id=product_id)
+
+    wrapper.build(
+        contract_address,  # smart contract address: str,
+        'refund'
+    )
+    product_obj.status = PurchaseStatus.REFUND_BY_SOLVER
+    product_obj.save()
+
+
+@celery_app.task
+def no_refund(solver_private_hash, contract_address, product_id):
+    wrapper = ContractWrapper(INFURA_KEY, solver_private_hash, timeout=600)  # default timeout value is 600
+    product_obj = Product.objects.get(id=product_id)
+
+    wrapper.build(
+        contract_address,  # smart contract address: str
+        'no_refund'
+    )
+    product_obj.status = PurchaseStatus.NO_REFUND_BY_SOLVER
+    product_obj.save()

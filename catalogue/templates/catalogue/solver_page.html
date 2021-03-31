@@ -24,8 +24,12 @@
                 <div class="product-price">
                     <b>{{ product.price }} {{ product.currency }}</b>
                 </div>
-                <div class="product-footer-two">
+                <div class="product-footer">
                     {{ product.status }}
+                </div>
+                <div class="product-footer-two">
+                    <a href="{% url 'refund_product' product.pk %}" class="product-btn btn btn-info">Refund</a>
+                    <a href="{% url 'no_refund_product' product.pk %}" class="product-btn btn btn-danger">No refund</a>
                 </div>
             </div>
         {% endfor %}
